@@ -33,7 +33,7 @@ public class MovieLocal implements MovieDataSource {
     public boolean isExist(String movieId){
         long rowCount = SQLite.select()
                 .from(Movie.class)
-                .where(Movie_Table.id.eq("$"))
+                .where(Movie_Table.id.eq(movieId))
                 .count();
         return (rowCount > 0) ? true : false;
     }
