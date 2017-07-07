@@ -53,4 +53,8 @@ ext {
     dbDebugVersion = "1.0.0";
 
     parcelerVersion = "1.1.9";
+
+    butterknifeVersion = "8.6.0";
+
+    picassoVersion = "2.5.2";
 }

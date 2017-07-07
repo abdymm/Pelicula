@@ -43,6 +43,9 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpLoggingVersion"
 
+    //image loader
+    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+
     //database
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:$rootProject.dbflowVersion"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:$rootProject.dbflowVersion"
@@ -51,6 +54,11 @@ dependencies {
     //parceler
     compile "org.parceler:parceler-api:$rootProject.parcelerVersion"
     annotationProcessor "org.parceler:parceler:$rootProject.parcelerVersion"
+
+    //butterknife
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+
 
     //db debug
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.dbDebugVersion"

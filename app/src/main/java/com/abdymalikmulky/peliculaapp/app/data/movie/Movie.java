@@ -1,6 +1,7 @@
 package com.abdymalikmulky.peliculaapp.app.data.movie;
 
 import com.abdymalikmulky.peliculaapp.app.data.DatabaseConfig;
+import com.abdymalikmulky.peliculaapp.util.EndpointUtil;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -94,7 +95,7 @@ public class Movie extends BaseModel
 
     public String getPosterPath()
     {
-        return posterPath;
+        return EndpointUtil.POSTER_PATH + posterPath;
     }
 
     public void setPosterPath(String posterPath)
