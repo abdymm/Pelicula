@@ -30,6 +30,20 @@ public class DateTimeUtil {
         return new SimpleDateFormat(ONLY_DATE_FORMAT).format(new Date());
     }
 
+    public static String convertToHumanReadableDate(String dateString) {
+        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
+        fromFormat.setLenient(false);
+        DateFormat toFormat = new SimpleDateFormat("dd MMMM yyyy");
+        toFormat.setLenient(false);
+        try {
+            Date date = fromFormat.parse(dateString);
+            return toFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public long getTimeDiff(String dateStop){
         long diff = 0;
         String dateStart = dateFormat.format(getTodayDate());

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.abdymalikmulky.peliculaapp.app.ui.movie.detail.DetailActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_setting"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_setting"
         app:showAsAction="never" />
 </menu>

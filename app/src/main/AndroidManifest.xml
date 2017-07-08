@@ -10,10 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".app.ui.movie.list.MovieListActivity">
+        <activity android:name=".app.ui.movie.list.MovieListActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,6 +22,14 @@
             android:label="@string/title_activity_detail"
             android:parentActivityName=".app.ui.movie.list.MovieListActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.abdymalikmulky.peliculaapp.app.ui.movie.list.MovieListActivity" />
+        </activity>
+        <activity
+            android:name=".app.ui.movie.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".app.ui.movie.list.MovieListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abdymalikmulky.peliculaapp.app.ui.movie.list.MovieListActivity" />

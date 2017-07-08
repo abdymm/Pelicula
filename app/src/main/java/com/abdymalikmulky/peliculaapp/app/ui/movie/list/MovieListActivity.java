@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.abdymalikmulky.peliculaapp.R;
@@ -14,6 +17,7 @@ import com.abdymalikmulky.peliculaapp.app.data.movie.MovieLocal;
 import com.abdymalikmulky.peliculaapp.app.data.movie.MovieRemote;
 import com.abdymalikmulky.peliculaapp.app.data.movie.MovieRepo;
 import com.abdymalikmulky.peliculaapp.app.ui.movie.detail.DetailActivity;
+import com.abdymalikmulky.peliculaapp.app.ui.movie.settings.SettingsActivity;
 import com.abdymalikmulky.peliculaapp.util.ConstantsUtil;
 
 import org.parceler.Parcels;
@@ -58,6 +62,25 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     protected void onResume() {
         super.onResume();
         movieListPresenter.loadMovies(ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_setting :
+                Intent settingIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

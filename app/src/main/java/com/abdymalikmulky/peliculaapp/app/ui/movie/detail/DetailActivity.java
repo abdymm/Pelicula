@@ -88,7 +88,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     public void showMovie() {
         movieDetailTitle.setText(movie.getTitle());
         movieDetailOverview.setText(movie.getOverview());
-        movieDetailYears.setText(DateTimeUtil.getOnlyYearFromDateString(movie.getReleaseDate()));
+        movieDetailYears.setText(DateTimeUtil.convertToHumanReadableDate(movie.getReleaseDate()));
         movieDetailRating.setText(String.valueOf(movie.getVoteAverage()));
         movieDetailRatingCount.setText(String.valueOf(movie.getVoteCount()));
 
