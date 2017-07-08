@@ -24,6 +24,9 @@ package com.abdymalikmulky.peliculaapp.util;
  */
 public class ConstantsUtil {
 
+    //INTENT KEY
+    public static final String INTENT_MOVIE = "movie";
+
     public static final String MOVIE_LIST_SORT_BY_VOTE_AVERAGE = "vote_average.desc";
     public static final String MOVIE_LIST_SORT_BY_POPULARITY_DESC = "popularity.desc";
 

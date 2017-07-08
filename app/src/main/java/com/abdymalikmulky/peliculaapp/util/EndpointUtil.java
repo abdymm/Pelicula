@@ -19,7 +19,7 @@ public class EndpointUtil {
     public static final String URL_GET_TRAILERS = BASE_URL+"movie/%s/videos?api_key=" + API_KEY;
     public static final String URL_GET_REVIEWS = BASE_URL+"movie/%s/reviews?api_key=" + API_KEY;
 
-    public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w342";
+    public static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185";
     public static final String BACKDROP_PATH = "http://image.tmdb.org/t/p/w780";
 
 

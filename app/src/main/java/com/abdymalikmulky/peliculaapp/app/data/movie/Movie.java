@@ -105,7 +105,7 @@ public class Movie extends BaseModel
 
     public String getBackdropPath()
     {
-        return backdropPath;
+        return EndpointUtil.BACKDROP_PATH + backdropPath;
     }
 
     public void setBackdropPath(String backdropPath)

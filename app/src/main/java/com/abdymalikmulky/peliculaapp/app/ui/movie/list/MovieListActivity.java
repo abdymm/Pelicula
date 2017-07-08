@@ -1,5 +1,6 @@
 package com.abdymalikmulky.peliculaapp.app.ui.movie.list;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,10 @@ import com.abdymalikmulky.peliculaapp.app.data.movie.Movie;
 import com.abdymalikmulky.peliculaapp.app.data.movie.MovieLocal;
 import com.abdymalikmulky.peliculaapp.app.data.movie.MovieRemote;
 import com.abdymalikmulky.peliculaapp.app.data.movie.MovieRepo;
+import com.abdymalikmulky.peliculaapp.app.ui.movie.detail.DetailActivity;
 import com.abdymalikmulky.peliculaapp.util.ConstantsUtil;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +74,13 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     @Override
     public void showError(String msg) {
         Timber.e("Movies-Error %s", msg);
+    }
+
+    @Override
+    public void onListClicked(Movie movie) {
+        Intent detailIntent = new Intent(this, DetailActivity.class);
+        detailIntent.putExtra(ConstantsUtil.INTENT_MOVIE, Parcels.wrap(movie));
+        startActivity(detailIntent);
     }
 
 

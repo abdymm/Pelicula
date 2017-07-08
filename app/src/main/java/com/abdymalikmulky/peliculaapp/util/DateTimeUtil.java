@@ -59,4 +59,9 @@ public class DateTimeUtil {
         return now;
     }
 
+
+    public static String getOnlyYearFromDateString(String date) {
+        String[] dateSplit = date.split("-");
+        return dateSplit[0];
+    }
 }

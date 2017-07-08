@@ -29,7 +29,7 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
     private MovieListContract.View movieListView;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.movie_poster)
+        @BindView(R.id.movie_detail_backdrop)
         ImageView moviePoster;
         @BindView(R.id.title_background)
         View titleBackground;
@@ -45,7 +45,7 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
 
         @Override
         public void onClick(View view) {
-
+            movieListView.onListClicked(movie);
         }
     }
 
