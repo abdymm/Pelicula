@@ -30,7 +30,7 @@ public class ConstantsUtil {
     //SP KEY
     public static final String SP_SORTBY = "pref_sortby";
 
-    public static final String MOVIE_LIST_SORT_BY_VOTE_AVERAGE = "vote_average.desc";
-    public static final String MOVIE_LIST_SORT_BY_POPULARITY_DESC = "popularity.desc";
+    public static final String MOVIE_LIST_SORT_BY_VOTE_AVERAGE = "top_rated";
+    public static final String MOVIE_LIST_SORT_BY_POPULARITY_DESC = "popular";
 
 }

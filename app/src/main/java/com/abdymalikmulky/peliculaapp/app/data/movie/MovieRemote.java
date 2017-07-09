@@ -24,7 +24,8 @@ public class MovieRemote implements MovieDataSource {
 
     @Override
     public void load(String filter, final LoadMoviesCallback callback) {
-        Call<DiscoverMovieResponse> call = movieApi.getAll(filter);
+        //TODO: Second parameter for paging, for stage 2, now i just use first page
+        Call<DiscoverMovieResponse> call = movieApi.getAll(filter, 1);
         call.enqueue(new Callback<DiscoverMovieResponse>() {
             @Override
             public void onResponse(Call<DiscoverMovieResponse> call, Response<DiscoverMovieResponse> response) {

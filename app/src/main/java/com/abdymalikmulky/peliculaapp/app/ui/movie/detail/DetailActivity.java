@@ -19,6 +19,7 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
@@ -56,7 +57,11 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
         setToolbar();
 
-        movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(ConstantsUtil.INTENT_MOVIE));
+        try {
+            movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(ConstantsUtil.INTENT_MOVIE));
+        } catch (NullPointerException e) {
+            Timber.e(e.toString());
+        }
 
         detailPresenter = new DetailPresenter(this);
     }

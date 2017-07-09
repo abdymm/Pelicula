@@ -5,6 +5,7 @@ import com.abdymalikmulky.peliculaapp.util.EndpointUtil;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -15,7 +16,7 @@ import retrofit2.http.Query;
 public interface MovieApi {
 
     @GET(EndpointUtil.URL_GET_MOVIES)
-    public Call<DiscoverMovieResponse> getAll(@Query("sort_by") String sortBy);
+    public Call<DiscoverMovieResponse> getAll(@Path("sort_by") String sortBy,  @Query("page") int page);
 
 
 }

@@ -129,7 +129,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         int columns;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            columns = 2;
+            columns = 3;
         } else
         {
             columns = 2;

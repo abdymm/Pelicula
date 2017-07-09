@@ -19,8 +19,8 @@
         <item>Top Rated</item>
     </string-array>
     <string-array name="pref_sortby_values">
-        <item>popularity.desc</item>
-        <item>vote_average.desc</item>
+        <item>popular</item>
+        <item>top_rated</item>
     </string-array>
 
     <string name="action_setting">Setting</string>
