@@ -1,15 +1,18 @@
 package com.abdymalikmulky.peliculaapp.app.ui.movie.list;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.abdymalikmulky.peliculaapp.R;
 import com.abdymalikmulky.peliculaapp.app.data.movie.Movie;
@@ -27,9 +30,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class MovieListActivity extends AppCompatActivity implements MovieListContract.View {
+
+    //SETTING SP
+    SharedPreferences sp;
 
     //REPO
     private MovieRepo movieRepo;
@@ -50,9 +55,11 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        setupPreferenceSetting();
+
         movies = new ArrayList<>();
 
-        movieRepo = new MovieRepo(new MovieLocal(), new MovieRemote());
+        movieRepo = new MovieRepo(getApplicationContext(), new MovieLocal(), new MovieRemote());
         movieListPresenter = new MovieListPresenter(this, movieRepo);
 
         initListMovieLayout();
@@ -61,7 +68,8 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     @Override
     protected void onResume() {
         super.onResume();
-        movieListPresenter.loadMovies(ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC);
+
+        movieListPresenter.loadMovies(getSortBy());
     }
 
     @Override
@@ -96,7 +104,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     @Override
     public void showError(String msg) {
-        Timber.e("Movies-Error %s", msg);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -106,6 +114,14 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         startActivity(detailIntent);
     }
 
+    private String getSortBy() {
+        return sp.getString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC);
+    }
+
+    private void setupPreferenceSetting() {
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC).apply();
+    }
 
     private void initListMovieLayout() {
         listMovie.setHasFixedSize(true);

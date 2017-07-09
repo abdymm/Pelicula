@@ -1,6 +1,12 @@
 package com.abdymalikmulky.peliculaapp.app.data.movie;
 
+import android.content.Context;
+
+import com.abdymalikmulky.peliculaapp.util.NetworkUtil;
+
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Bismillahirrahmanirrahim
@@ -9,28 +15,47 @@ import java.util.List;
 
 public class MovieRepo implements MovieDataSource {
 
+    private Context context;
     private MovieLocal movieLocal;
     private MovieRemote movieRemote;
 
-    public MovieRepo(MovieLocal movieLocal, MovieRemote movieRemote) {
+    public MovieRepo(Context context, MovieLocal movieLocal, MovieRemote movieRemote) {
+        this.context = context;
+
         this.movieLocal = movieLocal;
         this.movieRemote = movieRemote;
     }
 
     @Override
     public void load(String filter, final LoadMoviesCallback callback) {
-        movieRemote.load(filter, new LoadMoviesCallback() {
-            @Override
-            public void onLoaded(List<Movie> movies) {
-                saveMovieOnLocal(movies);
-                callback.onLoaded(movies);
-            }
+        //Check if network is available
+        if(NetworkUtil.isNetworkAvailable(context)) {
+            movieRemote.load(filter, new LoadMoviesCallback() {
+                @Override
+                public void onLoaded(List<Movie> movies) {
+                    saveMovieOnLocal(movies);
+                    callback.onLoaded(movies);
+                }
 
-            @Override
-            public void onFailed(String errorMessage) {
-                callback.onFailed(errorMessage);
-            }
-        });
+                @Override
+                public void onFailed(String errorMessage) {
+                    callback.onFailed(errorMessage);
+                }
+            });
+        } else {
+            movieLocal.load(filter, new LoadMoviesCallback() {
+                @Override
+                public void onLoaded(List<Movie> movies) {
+                    callback.onLoaded(movies);
+                }
+
+                @Override
+                public void onFailed(String errorMessage) {
+                    callback.onFailed(errorMessage);
+                }
+            });
+        }
+
     }
 
     private void saveMovieOnLocal(List<Movie> movies) {

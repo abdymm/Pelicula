@@ -1,6 +1,9 @@
 package com.abdymalikmulky.peliculaapp.app.data.movie;
 
+import com.abdymalikmulky.peliculaapp.util.ConstantsUtil;
+import com.raizlabs.android.dbflow.sql.language.From;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.language.Where;
 
 import java.util.List;
 
@@ -16,9 +19,20 @@ public class MovieLocal implements MovieDataSource {
 
     @Override
     public void load(String filter, LoadMoviesCallback callback) {
-        List<Movie> movies =  select()
-                .from(Movie.class)
-                .queryList();
+        From<Movie> fromQuery = select()
+                .from(Movie.class);
+
+        Where<Movie> whereQuery;
+
+        if(filter.equals(ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC)) {
+            whereQuery =  fromQuery
+                    .orderBy(Movie_Table.popularity, false);
+        } else {
+            whereQuery =  fromQuery
+                    .orderBy(Movie_Table.voteAverage, false);
+        }
+        List<Movie> movies = whereQuery.queryList();
+
         if(movies.size() > 0) {
             callback.onLoaded(movies);
         }else{

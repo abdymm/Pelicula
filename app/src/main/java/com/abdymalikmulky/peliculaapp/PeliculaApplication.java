@@ -13,6 +13,10 @@ import timber.log.Timber;
 
 public class PeliculaApplication extends Application{
 
+    private static PeliculaApplication instance;
+
+    public static PeliculaApplication getInstance() { return instance; }
+
     @Override
     public void onCreate() {
         super.onCreate();

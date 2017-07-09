@@ -27,6 +27,9 @@ public class ConstantsUtil {
     //INTENT KEY
     public static final String INTENT_MOVIE = "movie";
 
+    //SP KEY
+    public static final String SP_SORTBY = "pref_sortby";
+
     public static final String MOVIE_LIST_SORT_BY_VOTE_AVERAGE = "vote_average.desc";
     public static final String MOVIE_LIST_SORT_BY_POPULARITY_DESC = "popularity.desc";
 
