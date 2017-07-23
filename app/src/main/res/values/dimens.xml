@@ -6,9 +6,29 @@
     <dimen name="margin_between_text_small">2dp</dimen>
     <dimen name="margin_between_layout">2dp</dimen>
     <dimen name="title_text_size">20sp</dimen>
+    <dimen name="subtitle_text_size">16sp</dimen>
     <dimen name="title_detail_margin">10dp</dimen>
-    <dimen name="rating_text_size">38sp</dimen>
-    <dimen name="subrating_text_size">20sp</dimen>
+    <dimen name="rating_text_size">32sp</dimen>
+    <dimen name="subrating_text_size">16sp</dimen>
     <dimen name="rating_icon_width">35dp</dimen>
     <dimen name="rating_cout_icon_width">14dp</dimen>
+
+    <dimen name="margin_between_detail_box">6dp</dimen>
+    <dimen name="padding_subtitle_detail_box">6dp</dimen>
+
+    <dimen name="detail_poster_width">208px</dimen>
+    <dimen name="detail_poster_height">281px</dimen>
+
+    <dimen name="detail_subtitle_width">210dp</dimen>
+    <dimen name="detail_subtitle_bottomright_radius">20dp</dimen>
+    <dimen name="detail_subtitle_topright_radius">2dp</dimen>
+
+    <dimen name="margin_between_scroll">10dp</dimen>
+
+
+    <dimen name="video_list_size">150dp</dimen>
+    <dimen name="video_list_play_ic_size">38dp</dimen>
+    <dimen name="video_box_margin">10dp</dimen>
+
+    <dimen name="review_text_name_size">22dp</dimen>
 </resources>

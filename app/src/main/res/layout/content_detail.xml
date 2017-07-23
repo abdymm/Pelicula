@@ -49,8 +49,8 @@
             android:padding="@dimen/text_margin">
             <ImageView
                 android:id="@+id/movie_detail_poster"
-                android:layout_width="154px"
-                android:layout_height="231px"
+                android:layout_width="@dimen/detail_poster_width"
+                android:layout_height="@dimen/detail_poster_height"
                 android:src="@drawable/dummyposter"/>
             <TextView
                 android:id="@+id/movie_detail_overview"
@@ -122,6 +122,24 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
+        <!--TRAILERS-->
+        <FrameLayout
+            android:id="@+id/fragment_trailer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_between_detail_box">
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_between_detail_box">
+        </FrameLayout>
+
+
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

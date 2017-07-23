@@ -2,15 +2,21 @@ package com.abdymalikmulky.peliculaapp.app.ui.movie.detail;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abdymalikmulky.peliculaapp.R;
 import com.abdymalikmulky.peliculaapp.app.data.movie.Movie;
+import com.abdymalikmulky.peliculaapp.app.ui.movie.detail.reviews.ReviewFragment;
+import com.abdymalikmulky.peliculaapp.app.ui.movie.detail.videos.VideoFragment;
 import com.abdymalikmulky.peliculaapp.util.ConstantsUtil;
 import com.abdymalikmulky.peliculaapp.util.DateTimeUtil;
 import com.squareup.picasso.Picasso;
@@ -43,11 +49,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     TextView movieDetailRating;
     @BindView(R.id.movie_detail_rating_count)
     TextView movieDetailRatingCount;
+    @BindView(R.id.fragment_trailer)
+    FrameLayout fragmentTrailer;
 
 
     private DetailContract.Presenter detailPresenter;
-
     private Movie movie;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
         setToolbar();
 
+
         try {
             movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(ConstantsUtil.INTENT_MOVIE));
         } catch (NullPointerException e) {
@@ -64,6 +73,15 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         }
 
         detailPresenter = new DetailPresenter(this);
+
+        setupTrailerFragment();
+        setupReviewFragment();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        detailPresenter.start();
     }
 
     private void setToolbar() {
@@ -84,6 +102,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         }
     }
 
+
+    //MOVIE
     @Override
     public void setPresenter(DetailContract.Presenter presenter) {
         detailPresenter = presenter;
@@ -110,15 +130,26 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
                 .into(movieDetailBackdrop);
     }
 
-
     @Override
     public void showError(String msg) {
-
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        detailPresenter.start();
+
+    private void setupTrailerFragment() {
+
+        addFragmentMovieToActivity(R.id.fragment_trailer, new VideoFragment(), movie.getId());
+    }
+    private void setupReviewFragment() {
+        addFragmentMovieToActivity(R.id.fragment_reviews, new ReviewFragment(), movie.getId());
+    }
+    private void addFragmentMovieToActivity(int fragmentLayout, Fragment fragmentObj, String movieId) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsUtil.INTENT_MOVIE_ID, movieId);
+        fragmentObj.setArguments(bundle);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(fragmentLayout, fragmentObj);
+        ft.commit();
     }
 }

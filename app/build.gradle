@@ -67,8 +67,8 @@ dependencies {
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.dbDebugVersion"
 
     testCompile "junit:junit:$rootProject.junitVersion"
+
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.android.support:preference-v7:25.3.1'
-
 }

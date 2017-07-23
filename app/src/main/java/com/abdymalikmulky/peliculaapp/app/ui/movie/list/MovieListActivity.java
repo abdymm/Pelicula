@@ -124,17 +124,17 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     }
 
     private void initListMovieLayout() {
+
         listMovie.setHasFixedSize(true);
 
         int columns;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-        {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             columns = 3;
-        } else
-        {
+        } else {
             columns = 2;
         }
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, columns);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         listMovie.setLayoutManager(layoutManager);
         movieAdapter = new MovieListAdapter(movies, this);

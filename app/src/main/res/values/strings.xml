@@ -10,6 +10,9 @@
     <string name="year_detail_movie_dummy">Release Date : 2017</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="subtitle_trailer">Videos and Trailers</string>
+    <string name="subtitle_review">Reviews</string>
+
     <!-- Strings related to Settings -->
 
 
@@ -24,4 +27,14 @@
     </string-array>
 
     <string name="action_setting">Setting</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="dummy_review">There may be some fine performances in this movie,
+        but I honestly think the critics overrated this latest entry in the X-Men saga. The performances of Wolverine and
+        Prof. X by Hugh Jackman and Patrick Stewart are extraordinary. They create a believable and loving father-son
+        bond between their characters, with Logan caring for the ninety year old leader of the X-Men after a horrible
+        event occurs at the Xavier school the year before. Stephen Merchant takes over the role of Caliban from Tómas
+        Lemarquis, who played the character in X-Men Apocalypse, and transforms him into an ally to Logan and Charlies.</string>
 </resources>
