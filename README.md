@@ -1,2 +1,2 @@
-# Pelicula
-Movie App
+# Perfilman App
+Info About Movies

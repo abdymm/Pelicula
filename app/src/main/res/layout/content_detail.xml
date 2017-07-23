@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.abdymalikmulky.peliculaapp.app.ui.movie.detail.DetailActivity"
+    tools:context="com.abdymalikmulky.perfilman.app.ui.movie.detail.DetailActivity"
     tools:showIn="@layout/activity_detail"
     android:background="#f5f5f5">
 
