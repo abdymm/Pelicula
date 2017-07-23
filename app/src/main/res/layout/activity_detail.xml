@@ -42,9 +42,11 @@
                     android:src="@drawable/ic_youtube_64"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:id="@+id/imageView5" />
+                    android:id="@+id/movie_detail_youtube_ic"
+                    android:visibility="gone" />
 
                 <TextView
+                    android:id="@+id/movie_detail_youtube_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/play_trailer"
@@ -52,8 +54,9 @@
                     android:textStyle="bold"
                     android:textSize="@dimen/play_trailer_text_size"
                     android:textColor="@color/colorSubTitleDetail"
-                    android:layout_below="@+id/imageView5"
-                    android:layout_alignParentStart="true" />
+                    android:layout_below="@+id/movie_detail_youtube_ic"
+                    android:layout_alignParentStart="true"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 

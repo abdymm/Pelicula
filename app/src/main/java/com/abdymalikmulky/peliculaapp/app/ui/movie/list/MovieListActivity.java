@@ -12,7 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.abdymalikmulky.peliculaapp.R;
 import com.abdymalikmulky.peliculaapp.app.data.movie.Movie;
@@ -36,6 +37,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     //SETTING SP
     SharedPreferences sp;
 
+
     //REPO
     private MovieRepo movieRepo;
 
@@ -45,6 +47,11 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     //VIEW COMPONENT
     @BindView(R.id.list_movie)
     RecyclerView listMovie;
+    @BindView(R.id.loading_movie)
+    ProgressBar loadingMovie;
+    @BindView(R.id.tv_error_global_msg)
+    TextView tvErrorGlobalMsg;
+
 
     private List<Movie> movies;
     private MovieListAdapter movieAdapter;
@@ -68,7 +75,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     @Override
     protected void onResume() {
         super.onResume();
-
+        showHideLoadingList(loadingMovie, listMovie, true);
         movieListPresenter.loadMovies(getSortBy());
     }
 
@@ -83,7 +90,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_setting :
+            case R.id.action_setting:
                 Intent settingIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingIntent);
                 return true;
@@ -98,13 +105,16 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     @Override
     public void showMovies(List<Movie> movies) {
+        showHideLoadingList(loadingMovie, listMovie, false);
         listMovie.setVisibility(View.VISIBLE);
+
         movieAdapter.refresh(movies);
     }
 
     @Override
     public void showError(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        showHideLoadingList(loadingMovie, listMovie, false);
+        tvErrorGlobalMsg.setText(msg);
     }
 
     @Override
@@ -134,10 +144,19 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
             columns = 2;
         }
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, columns);
-        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         listMovie.setLayoutManager(layoutManager);
         movieAdapter = new MovieListAdapter(movies, this);
         listMovie.setAdapter(movieAdapter);
+    }
+
+    private void showHideLoadingList(ProgressBar pb, RecyclerView rv, boolean show) {
+        if (show) {
+            pb.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+        } else {
+            pb.setVisibility(View.GONE);
+            rv.setVisibility(View.VISIBLE);
+        }
     }
 }

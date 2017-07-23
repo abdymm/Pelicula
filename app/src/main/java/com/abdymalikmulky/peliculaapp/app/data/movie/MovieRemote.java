@@ -31,7 +31,7 @@ public class MovieRemote implements MovieDataSource {
             public void onResponse(Call<DiscoverMovieResponse> call, Response<DiscoverMovieResponse> response) {
                 if(response.isSuccessful()) {
                     DiscoverMovieResponse discoverMovieResponse = response.body();
-                    List<Movie> movies = response.body().getMovies();
+                    List<Movie> movies = discoverMovieResponse.getMovies();
                     if(movies.size() > 0) {
                         callback.onLoaded(movies);
                     } else {
@@ -44,7 +44,7 @@ public class MovieRemote implements MovieDataSource {
 
             @Override
             public void onFailure(Call<DiscoverMovieResponse> call, Throwable t) {
-                callback.onFailed(t.getMessage());
+                callback.onFailed(t.toString());
             }
         });
     }

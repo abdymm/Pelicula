@@ -56,7 +56,10 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     TextView movieDetailRatingCount;
     @BindView(R.id.fragment_trailer)
     FrameLayout fragmentTrailer;
-
+    @BindView(R.id.movie_detail_youtube_ic)
+    ImageView movieDetailYoutubeIc;
+    @BindView(R.id.movie_detail_youtube_label)
+    TextView movieDetailYoutubeLabel;
 
 
     private DetailContract.Presenter detailPresenter;
@@ -65,7 +68,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     private VideoLocal videoLocal;
     private VideoRemote videoRemote;
     private VideoRepo videoRepo;
-
 
 
     @Override
@@ -152,6 +154,9 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
     @Override
     public void showFirstVideoInToolbar(final Video video) {
+        movieDetailYoutubeIc.setVisibility(View.VISIBLE);
+        movieDetailYoutubeLabel.setVisibility(View.VISIBLE);
+        
         Picasso.with(getApplicationContext())
                 .load(video.getThumbnailUrl(video))
                 .placeholder(R.drawable.blank_movie_poster)
@@ -171,9 +176,11 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
         addFragmentMovieToActivity(R.id.fragment_trailer, new VideoFragment(), movie.getId());
     }
+
     private void setupReviewFragment() {
         addFragmentMovieToActivity(R.id.fragment_reviews, new ReviewFragment(), movie.getId());
     }
+
     private void addFragmentMovieToActivity(int fragmentLayout, Fragment fragmentObj, String movieId) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsUtil.INTENT_MOVIE_ID, movieId);
