@@ -1,5 +1,11 @@
 package com.abdymalikmulky.peliculaapp.app.ui.movie.detail;
 
+import com.abdymalikmulky.peliculaapp.app.data.video.Video;
+import com.abdymalikmulky.peliculaapp.app.data.video.VideoDataSource;
+import com.abdymalikmulky.peliculaapp.app.data.video.VideoRepo;
+
+import java.util.List;
+
 /**
  * Bismillahirrahmanirrahim
  * Created by abdymalikmulky on 7/8/17.
@@ -7,9 +13,11 @@ package com.abdymalikmulky.peliculaapp.app.ui.movie.detail;
 
 public class DetailPresenter implements DetailContract.Presenter {
 
-    DetailContract.View detailView;
+    private VideoRepo videoRepo;
+    private DetailContract.View detailView;
 
-    public DetailPresenter(DetailContract.View detailView) {
+    public DetailPresenter(VideoRepo videoRepo, DetailContract.View detailView) {
+        this.videoRepo = videoRepo;
         this.detailView = detailView;
         this.detailView.setPresenter(this);
     }
@@ -22,5 +30,20 @@ public class DetailPresenter implements DetailContract.Presenter {
     @Override
     public void stop() {
 
+    }
+
+    @Override
+    public void loadFirstVideo(String movieId) {
+        videoRepo.load(movieId, new VideoDataSource.LoadVideosCallback() {
+            @Override
+            public void onLoaded(List<Video> videos) {
+                detailView.showFirstVideoInToolbar(videos.get(0));
+            }
+
+            @Override
+            public void onFailed(String errorMessage) {
+                detailView.showError(errorMessage);
+            }
+        });
     }
 }

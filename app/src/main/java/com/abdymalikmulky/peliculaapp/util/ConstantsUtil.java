@@ -16,6 +16,13 @@
 
 package com.abdymalikmulky.peliculaapp.util;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+
+import com.abdymalikmulky.peliculaapp.app.data.video.Video;
+
 /**
  * Bismillahirrahmanirrahim
  * abdymalikmulky
@@ -34,4 +41,15 @@ public class ConstantsUtil {
     public static final String MOVIE_LIST_SORT_BY_VOTE_AVERAGE = "top_rated";
     public static final String MOVIE_LIST_SORT_BY_POPULARITY_DESC = "popular";
 
+
+    public static void openVideoIntent(Activity activity, Video video) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(video.getUrl(video)));
+        try {
+            activity.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            activity.startActivity(webIntent);
+        }
+    }
 }

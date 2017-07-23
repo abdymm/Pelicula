@@ -82,6 +82,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     public void refresh(List<Video> videos) {
         this.videos.clear();
         this.videos = videos;
+        this.videos.remove(0);
         notifyDataSetChanged();
     }
 }

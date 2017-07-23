@@ -120,13 +120,6 @@ public class VideoFragment extends Fragment implements VideoContract.View{
 
     @Override
     public void onClicked(Video video) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(video.getUrl(video)));
-        try {
-            startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            startActivity(webIntent);
-        }
+        ConstantsUtil.openVideoIntent(getActivity(), video);
     }
 }

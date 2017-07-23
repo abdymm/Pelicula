@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +16,10 @@ import android.widget.Toast;
 
 import com.abdymalikmulky.peliculaapp.R;
 import com.abdymalikmulky.peliculaapp.app.data.movie.Movie;
+import com.abdymalikmulky.peliculaapp.app.data.video.Video;
+import com.abdymalikmulky.peliculaapp.app.data.video.VideoLocal;
+import com.abdymalikmulky.peliculaapp.app.data.video.VideoRemote;
+import com.abdymalikmulky.peliculaapp.app.data.video.VideoRepo;
 import com.abdymalikmulky.peliculaapp.app.ui.movie.detail.reviews.ReviewFragment;
 import com.abdymalikmulky.peliculaapp.app.ui.movie.detail.videos.VideoFragment;
 import com.abdymalikmulky.peliculaapp.util.ConstantsUtil;
@@ -53,8 +58,14 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     FrameLayout fragmentTrailer;
 
 
+
     private DetailContract.Presenter detailPresenter;
     private Movie movie;
+
+    private VideoLocal videoLocal;
+    private VideoRemote videoRemote;
+    private VideoRepo videoRepo;
+
 
 
     @Override
@@ -72,7 +83,11 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             Timber.e(e.toString());
         }
 
-        detailPresenter = new DetailPresenter(this);
+        videoLocal = new VideoLocal();
+        videoRemote = new VideoRemote();
+        videoRepo = new VideoRepo(videoLocal, videoRemote);
+
+        detailPresenter = new DetailPresenter(videoRepo, this);
 
         setupTrailerFragment();
         setupReviewFragment();
@@ -82,6 +97,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     protected void onResume() {
         super.onResume();
         detailPresenter.start();
+        detailPresenter.loadFirstVideo(movie.getId());
     }
 
     private void setToolbar() {
@@ -101,7 +117,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             //
         }
     }
-
 
     //MOVIE
     @Override
@@ -133,6 +148,22 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void showError(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showFirstVideoInToolbar(final Video video) {
+        Picasso.with(getApplicationContext())
+                .load(video.getThumbnailUrl(video))
+                .placeholder(R.drawable.blank_movie_poster)
+                .error(R.drawable.blank_movie_poster)
+                .into(movieDetailBackdrop);
+
+        movieDetailBackdrop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantsUtil.openVideoIntent(DetailActivity.this, video);
+            }
+        });
     }
 
 
