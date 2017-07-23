@@ -1,9 +1,6 @@
 package com.abdymalikmulky.peliculaapp.app.ui.movie.detail.videos;
 
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abdymalikmulky.peliculaapp.R;
 import com.abdymalikmulky.peliculaapp.app.data.video.Video;
@@ -27,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,7 +114,7 @@ public class VideoFragment extends Fragment implements VideoContract.View{
 
     @Override
     public void showError(String msg) {
-
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

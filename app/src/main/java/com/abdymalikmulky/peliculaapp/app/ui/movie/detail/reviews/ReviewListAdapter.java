@@ -43,7 +43,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
         @Override
         public void onClick(View view) {
-            //trailerView.onClicked(video);
+            reviewView.onClicked(review);
         }
     }
 

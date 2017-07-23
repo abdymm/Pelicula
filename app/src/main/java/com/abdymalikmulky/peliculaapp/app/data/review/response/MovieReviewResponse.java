@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ReviewResponse {
+public class MovieReviewResponse {
 
     @SerializedName("id")
     @Expose

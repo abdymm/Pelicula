@@ -1,7 +1,10 @@
 package com.abdymalikmulky.peliculaapp.app.ui.movie.detail.reviews;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abdymalikmulky.peliculaapp.R;
 import com.abdymalikmulky.peliculaapp.app.data.review.Review;
-import com.abdymalikmulky.peliculaapp.app.data.video.Video;
+import com.abdymalikmulky.peliculaapp.app.data.review.ReviewLocal;
+import com.abdymalikmulky.peliculaapp.app.data.review.ReviewRemote;
+import com.abdymalikmulky.peliculaapp.app.data.review.ReviewRepo;
+import com.abdymalikmulky.peliculaapp.util.ConstantsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +44,29 @@ public class ReviewFragment extends Fragment implements ReviewContract.View {
     private List<Review> reviews;
     private ReviewListAdapter reviewListAdapter;
 
+    private ReviewLocal reviewLocal;
+    private ReviewRemote reviewRemote;
+    private ReviewRepo reviewRepo;
+
+    private ReviewContract.Presenter reviewPresenter;
+
+    private String movieId;
+
+
     public ReviewFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        reviewLocal = new ReviewLocal();
+        reviewRemote = new ReviewRemote();
+        reviewRepo = new ReviewRepo(reviewLocal, reviewRemote);
+
+        reviewPresenter = new ReviewPresenter(reviewRepo, this);
+        movieId = getArguments().getString(ConstantsUtil.INTENT_MOVIE_ID, "");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,11 +80,14 @@ public class ReviewFragment extends Fragment implements ReviewContract.View {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        reviewPresenter.loadReviews(movieId);
+    }
+
     private void initListReviewLayout() {
         reviews = new ArrayList<>();
-        for (int i=0; i<10; i++) {
-            reviews.add(new Review());
-        }
         listReview.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -71,22 +100,25 @@ public class ReviewFragment extends Fragment implements ReviewContract.View {
 
     @Override
     public void setPresenter(ReviewContract.Presenter presenter) {
-
+        reviewPresenter = presenter;
     }
 
     @Override
     public void showReviews(List<Review> reviews) {
-
+        this.reviews = reviews;
+        reviewListAdapter.refresh(reviews);
     }
 
     @Override
     public void showError(String msg) {
-
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onClicked(Video video) {
-
+    public void onClicked(Review review) {
+        Intent detailReviewIntent = new Intent(Intent.ACTION_VIEW);
+        detailReviewIntent.setData(Uri.parse(review.getUrl()));
+        startActivity(detailReviewIntent);
     }
 
     @Override

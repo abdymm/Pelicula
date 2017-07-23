@@ -3,7 +3,6 @@ package com.abdymalikmulky.peliculaapp.app.ui.movie.detail.reviews;
 import com.abdymalikmulky.peliculaapp.app.BasePresenter;
 import com.abdymalikmulky.peliculaapp.app.BaseView;
 import com.abdymalikmulky.peliculaapp.app.data.review.Review;
-import com.abdymalikmulky.peliculaapp.app.data.video.Video;
 
 import java.util.List;
 
@@ -18,11 +17,11 @@ public class ReviewContract {
         void showReviews(List<Review> reviews);
         void showError(String msg);
 
-        void onClicked(Video video);
+        void onClicked(Review review);
     }
 
     public interface Presenter extends BasePresenter {
-        void loadReviews(int movieId);
+        void loadReviews(String movieId);
     }
 
 }

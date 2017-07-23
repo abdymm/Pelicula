@@ -31,4 +31,5 @@
     <dimen name="video_box_margin">10dp</dimen>
 
     <dimen name="review_text_name_size">22dp</dimen>
+    <dimen name="play_trailer_text_size">20sp</dimen>
 </resources>

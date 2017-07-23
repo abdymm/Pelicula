@@ -24,6 +24,6 @@ public class EndpointUtil {
     public static final String YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%1$s/0.jpg";
 
     //REVIEW
-    public static final String URL_GET_REVIEWS = "http://api.themoviedb.org/3/movie/%s/reviews?api_key=" + API_KEY;
+    public static final String URL_GET_REVIEWS = "http://api.themoviedb.org/3/movie/{movie_id}/reviews?api_key=" + API_KEY;
 
 }
