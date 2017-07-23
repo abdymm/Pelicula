@@ -114,6 +114,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     @Override
     public void showError(String msg) {
         showHideLoadingList(loadingMovie, listMovie, false);
+        tvErrorGlobalMsg.setVisibility(View.VISIBLE);
         tvErrorGlobalMsg.setText(msg);
     }
 
