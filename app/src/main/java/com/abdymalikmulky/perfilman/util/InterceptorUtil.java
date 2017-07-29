@@ -8,14 +8,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
  */
 
 public class InterceptorUtil {
-
-
     public static final Interceptor getLoggingInterceptor(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return loggingInterceptor;
     }
-
-
 
 }
