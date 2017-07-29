@@ -33,7 +33,7 @@ public class VideoRemote implements VideoDataSource {
                     if(videos.size() > 0) {
                         callback.onLoaded(videos);
                     } else {
-                        callback.onFailed("NO DATA");
+                        callback.onFailed("NO DATA VIDEOS");
                     }
                 } else {
                     callback.onFailed(response.message());

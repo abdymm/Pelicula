@@ -34,7 +34,7 @@ public class ReviewRemote implements ReviewDataSource {
                     if(reviews.size() > 0) {
                         callback.onLoaded(reviews);
                     } else {
-                        callback.onFailed("NO DATA");
+                        callback.onFailed("NO DATA REVIEWS");
                     }
                 } else {
                     callback.onFailed(response.message());

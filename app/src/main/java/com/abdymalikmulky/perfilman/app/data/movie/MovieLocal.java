@@ -66,7 +66,7 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
         if(movies.size() > 0) {
             callback.onLoaded(movies);
         } else {
-            callback.onFailed("NO DATA");
+            callback.onFailed("NO DATA" + thisTable.toUpperCase());
         }
     }
 
