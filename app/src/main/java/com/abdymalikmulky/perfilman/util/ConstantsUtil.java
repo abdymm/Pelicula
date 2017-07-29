@@ -40,6 +40,7 @@ public class ConstantsUtil {
 
     public static final String MOVIE_LIST_SORT_BY_VOTE_AVERAGE = "top_rated";
     public static final String MOVIE_LIST_SORT_BY_POPULARITY_DESC = "popular";
+    public static final String MOVIE_LIST_SORT_BY_MY_FAVORITES = "my_favorites";
 
 
     public static void openVideoIntent(Activity activity, Video video) {

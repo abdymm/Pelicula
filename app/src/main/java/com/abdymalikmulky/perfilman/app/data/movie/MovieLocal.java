@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.abdymalikmulky.perfilman.app.data.favorite.FavoriteContract;
 import com.abdymalikmulky.perfilman.helper.DatabaseHelper;
 import com.abdymalikmulky.perfilman.util.ConstantsUtil;
 
@@ -31,7 +32,7 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
     public static final String KEY_VOTE_AVERAGE = "average";
     public static final String KEY_POPULARITY = "popularity";
 
-    public static final String CREATE_TABLE_MOVIE = "CREATE TABLE " + thisTable + "("
+    public static final String CREATE_TABLE = "CREATE TABLE " + thisTable + "("
             + KEY_ID + " TEXT,"
             + KEY_TITLE + " TEXT,"
             + KEY_OVERVIEW + " INTEGER,"
@@ -53,8 +54,12 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
         String conditionQuery = "";
         if(filter.equals(ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC)) {
             conditionQuery =  "ORDER BY "+KEY_POPULARITY+" DESC";
-        } else {
+        } else if(filter.equals(ConstantsUtil.MOVIE_LIST_SORT_BY_VOTE_AVERAGE)) {
             conditionQuery =  "ORDER BY "+KEY_VOTE_AVERAGE+" DESC";
+        } else {
+            conditionQuery =  "WHERE " + KEY_ID + " in " +
+                    "( select " + FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + " " +
+                    "from " + FavoriteContract.FavoriteEntry.TABLE_NAME + " )";
         }
 
         List<Movie> movies = queryAll(conditionQuery);
@@ -116,10 +121,12 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
         Cursor cursor = getDatabase().rawQuery(selectQuery, null);
 
         cursor.moveToFirst();
-        do {
-            Movie movie = cursorToItem(cursor);
-            movies.add(movie);
-        } while (cursor.moveToNext());
+        if(cursor.getCount() > 0) {
+            do {
+                Movie movie = cursorToItem(cursor);
+                movies.add(movie);
+            } while (cursor.moveToNext());
+        }
         cursor.close();
 
         return movies;

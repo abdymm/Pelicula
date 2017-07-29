@@ -2,6 +2,7 @@ package com.abdymalikmulky.perfilman.app.ui.movie.detail;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abdymalikmulky.perfilman.R;
+import com.abdymalikmulky.perfilman.app.data.favorite.Favorite;
+import com.abdymalikmulky.perfilman.app.data.favorite.FavoriteLocal;
+import com.abdymalikmulky.perfilman.app.data.favorite.FavoriteRemote;
+import com.abdymalikmulky.perfilman.app.data.favorite.FavoriteRepo;
 import com.abdymalikmulky.perfilman.app.data.movie.Movie;
 import com.abdymalikmulky.perfilman.app.data.video.Video;
 import com.abdymalikmulky.perfilman.app.data.video.VideoLocal;
@@ -30,6 +35,7 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
@@ -60,10 +66,18 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     ImageView movieDetailYoutubeIc;
     @BindView(R.id.movie_detail_youtube_label)
     TextView movieDetailYoutubeLabel;
+    @BindView(R.id.movie_detail_favorite)
+    FloatingActionButton movieDetailFavorite;
 
+    private boolean isFavorited = false;
 
     private DetailContract.Presenter detailPresenter;
     private Movie movie;
+    private Favorite favoritedMovie;
+
+    private FavoriteLocal favoriteLocal;
+    private FavoriteRemote favoriteRemote;
+    private FavoriteRepo favoriteRepo;
 
     private VideoLocal videoLocal;
     private VideoRemote videoRemote;
@@ -84,22 +98,40 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         } catch (NullPointerException e) {
             Timber.e(e.toString());
         }
+        favoritedMovie = new Favorite();
 
+        initRepo();
+        detailPresenter = new DetailPresenter(favoriteRepo, videoRepo, this);
+
+        setupTrailerFragment();
+        setupReviewFragment();
+    }
+
+    private void initRepo() {
         videoLocal = new VideoLocal();
         videoRemote = new VideoRemote();
         videoRepo = new VideoRepo(videoLocal, videoRemote);
 
-        detailPresenter = new DetailPresenter(videoRepo, this);
-
-        setupTrailerFragment();
-        setupReviewFragment();
+        favoriteLocal = new FavoriteLocal(getApplicationContext());
+        favoriteRemote = new FavoriteRemote();
+        favoriteRepo = new FavoriteRepo(favoriteLocal, favoriteRemote);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         detailPresenter.start();
+        detailPresenter.isFavorited(movie.getId());
         detailPresenter.loadFirstVideo(movie.getId());
+    }
+
+    @OnClick(R.id.movie_detail_favorite)
+    public void favorite(View view) {
+        if(!isFavorited) {
+            detailPresenter.updateToFavorite(movie);
+        } else {
+            detailPresenter.updateToUnfavorite(favoritedMovie.getId());
+        }
     }
 
     private void setToolbar() {
@@ -156,7 +188,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     public void showFirstVideoInToolbar(final Video video) {
         movieDetailYoutubeIc.setVisibility(View.VISIBLE);
         movieDetailYoutubeLabel.setVisibility(View.VISIBLE);
-        
+
         Picasso.with(getApplicationContext())
                 .load(video.getThumbnailUrl(video))
                 .placeholder(R.drawable.blank_movie_poster)
@@ -171,9 +203,21 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         });
     }
 
+    @Override
+    public void showFavorited(Favorite favoriteMovie) {
+        isFavorited = true;
+        this.favoritedMovie = favoriteMovie;
+        movieDetailFavorite.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_24dp));
+    }
+
+    @Override
+    public void showUnfavorited() {
+        isFavorited = false;
+        movieDetailFavorite.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_unfavorite_24dp));
+    }
+
 
     private void setupTrailerFragment() {
-
         addFragmentMovieToActivity(R.id.fragment_trailer, new VideoFragment(), movie.getId());
     }
 

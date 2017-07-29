@@ -2,6 +2,7 @@ package com.abdymalikmulky.perfilman.app.data.movie;
 
 import android.content.Context;
 
+import com.abdymalikmulky.perfilman.util.ConstantsUtil;
 import com.abdymalikmulky.perfilman.util.NetworkUtil;
 
 import java.util.List;
@@ -26,21 +27,8 @@ public class MovieRepo implements MovieDataSource {
 
     @Override
     public void load(String filter, final LoadMoviesCallback callback) {
-        //Check if network is available
-        if(NetworkUtil.isNetworkAvailable(context)) {
-            movieRemote.load(filter, new LoadMoviesCallback() {
-                @Override
-                public void onLoaded(List<Movie> movies) {
-                    saveMovieOnLocal(movies);
-                    callback.onLoaded(movies);
-                }
-
-                @Override
-                public void onFailed(String errorMessage) {
-                    callback.onFailed(errorMessage);
-                }
-            });
-        } else {
+        //If sort by favorites, just go to local data
+        if(filter.equals(ConstantsUtil.MOVIE_LIST_SORT_BY_MY_FAVORITES)) {
             movieLocal.load(filter, new LoadMoviesCallback() {
                 @Override
                 public void onLoaded(List<Movie> movies) {
@@ -52,6 +40,37 @@ public class MovieRepo implements MovieDataSource {
                     callback.onFailed(errorMessage);
                 }
             });
+
+        } else {
+
+            //Check if network is available
+            if(NetworkUtil.isNetworkAvailable(context)) {
+                movieRemote.load(filter, new LoadMoviesCallback() {
+                    @Override
+                    public void onLoaded(List<Movie> movies) {
+                        saveMovieOnLocal(movies);
+                        callback.onLoaded(movies);
+                    }
+
+                    @Override
+                    public void onFailed(String errorMessage) {
+                        callback.onFailed(errorMessage);
+                    }
+                });
+            } else {
+                movieLocal.load(filter, new LoadMoviesCallback() {
+                    @Override
+                    public void onLoaded(List<Movie> movies) {
+                        callback.onLoaded(movies);
+                    }
+
+                    @Override
+                    public void onFailed(String errorMessage) {
+                        callback.onFailed(errorMessage);
+                    }
+                });
+            }
+
         }
 
     }

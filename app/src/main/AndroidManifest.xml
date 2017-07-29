@@ -36,6 +36,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abdymalikmulky.perfilman.app.ui.movie.list.MovieListActivity" />
         </activity>
+        <provider
+            android:name="com.abdymalikmulky.perfilman.app.data.favorite.FavoriteContentProvider"
+            android:authorities="com.abdymalikmulky.perfilman"
+            android:exported="false"/>
     </application>
 
 </manifest>

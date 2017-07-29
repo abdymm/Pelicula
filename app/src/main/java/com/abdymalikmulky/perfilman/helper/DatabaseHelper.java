@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.abdymalikmulky.perfilman.app.data.favorite.FavoriteContract;
 import com.abdymalikmulky.perfilman.app.data.movie.MovieLocal;
 
 /**
@@ -28,12 +29,14 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(MovieLocal.CREATE_TABLE_MOVIE);
+        database.execSQL(MovieLocal.CREATE_TABLE);
+        database.execSQL(FavoriteContract.FavoriteEntry.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + MovieLocal.CREATE_TABLE_MOVIE);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieLocal.CREATE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FavoriteContract.FavoriteEntry.CREATE_TABLE);
         onCreate(db);
     }
 
