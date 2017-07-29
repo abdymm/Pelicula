@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     TextView movieDetailYoutubeLabel;
     @BindView(R.id.movie_detail_favorite)
     FloatingActionButton movieDetailFavorite;
+    @BindView(R.id.movie_trailer_share)
+    RelativeLayout movieTrailerShare;
 
     private boolean isFavorited = false;
 
@@ -116,6 +119,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         favoriteRemote = new FavoriteRemote();
         favoriteRepo = new FavoriteRepo(favoriteLocal, favoriteRemote);
     }
+
+
 
     @Override
     protected void onResume() {
@@ -199,6 +204,15 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             @Override
             public void onClick(View v) {
                 ConstantsUtil.openVideoIntent(DetailActivity.this, video);
+            }
+        });
+
+        movieDetailBackdrop.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String sharingText = "This is first trailer of " + movie.getTitle();
+                ConstantsUtil.shareVideoIntent(DetailActivity.this, sharingText, video);
+                return true;
             }
         });
     }

@@ -53,4 +53,12 @@ public class ConstantsUtil {
             activity.startActivity(webIntent);
         }
     }
+
+    public static void shareVideoIntent(Activity activity, String text, Video video) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("video/mp4");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, text);
+        activity.startActivity(Intent.createChooser(sharingIntent,"Share on"));
+    }
 }
