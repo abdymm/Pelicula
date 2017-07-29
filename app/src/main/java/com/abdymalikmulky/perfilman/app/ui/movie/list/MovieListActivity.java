@@ -66,7 +66,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
         movies = new ArrayList<>();
 
-        movieRepo = new MovieRepo(getApplicationContext(), new MovieLocal(), new MovieRemote());
+        movieRepo = new MovieRepo(getApplicationContext(), new MovieLocal(getApplicationContext()), new MovieRemote());
         movieListPresenter = new MovieListPresenter(this, movieRepo);
 
         initListMovieLayout();
