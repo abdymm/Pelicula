@@ -76,8 +76,11 @@ public class Movie extends BaseModel
         this.releaseDate = releaseDate;
     }
 
-    public String getPosterPath()
-    {
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public String getFullPosterPath() {
         return EndpointUtil.POSTER_PATH + posterPath;
     }
 
@@ -87,6 +90,11 @@ public class Movie extends BaseModel
     }
 
     public String getBackdropPath()
+    {
+        return backdropPath;
+    }
+
+    public String getFullBackdropPath()
     {
         return EndpointUtil.BACKDROP_PATH + backdropPath;
     }

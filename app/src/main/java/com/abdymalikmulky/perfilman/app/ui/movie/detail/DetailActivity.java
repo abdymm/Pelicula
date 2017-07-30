@@ -172,13 +172,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         movieDetailRatingCount.setText(String.valueOf(movie.getVoteCount()));
 
         Picasso.with(getApplicationContext())
-                .load(movie.getPosterPath())
+                .load(movie.getFullPosterPath())
                 .placeholder(R.drawable.blank_movie_poster)
                 .error(R.drawable.blank_movie_poster)
                 .into(movieDetailPoster);
 
         Picasso.with(getApplicationContext())
-                .load(movie.getBackdropPath())
+                .load(movie.getFullBackdropPath())
                 .placeholder(R.drawable.blank_movie_poster)
                 .error(R.drawable.blank_movie_poster)
                 .into(movieDetailBackdrop);

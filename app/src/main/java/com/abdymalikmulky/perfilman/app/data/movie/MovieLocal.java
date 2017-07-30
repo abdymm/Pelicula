@@ -153,6 +153,10 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
         return null;
     }
 
+    public void delete(){
+        //
+    }
+
     /*
     @Override
     public void load(String filter, LoadMoviesCallback callback) {
@@ -189,10 +193,7 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
         return (rowCount > 0) ? true : false;
     }
 
-    public void delete(){
-        SQLite.delete(Movie.class)
-                .execute();
-    }
+
     */
 
 

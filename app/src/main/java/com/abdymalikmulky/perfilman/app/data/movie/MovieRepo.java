@@ -42,7 +42,6 @@ public class MovieRepo implements MovieDataSource {
             });
 
         } else {
-
             //Check if network is available
             if(NetworkUtil.isNetworkAvailable(context)) {
                 movieRemote.load(filter, new LoadMoviesCallback() {
@@ -79,9 +78,7 @@ public class MovieRepo implements MovieDataSource {
         for (Movie movie : movies) {
             //if exist on db local, dont save
             if(!movieLocal.isExist(movie.getId())) {
-
                 movieLocal.save(movie);
-
             }
         }
     }

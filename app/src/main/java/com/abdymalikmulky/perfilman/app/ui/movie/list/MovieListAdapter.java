@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Bismillahirrahmanirrahim
@@ -68,11 +69,12 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
         holder.itemView.setOnClickListener(holder);
 
         holder.movie = movies.get(position);
+        Timber.d("MovieListData %s", holder.movie.toString());
 
         holder.movieName.setText(holder.movie.getTitle());
 
         Picasso.with(context)
-                .load(holder.movie.getPosterPath())
+                .load(holder.movie.getFullPosterPath())
                 .placeholder(R.drawable.blank_movie_poster)
                 .error(R.drawable.blank_movie_poster)
                 .into(holder.moviePoster);

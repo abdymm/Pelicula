@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -34,6 +35,10 @@ import butterknife.ButterKnife;
 
 public class MovieListActivity extends AppCompatActivity implements MovieListContract.View {
 
+    //state
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+    Parcelable listState;
+
     //SETTING SP
     SharedPreferences settingSp;
 
@@ -55,6 +60,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     private List<Movie> movies;
     private MovieListAdapter movieAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +81,27 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     @Override
     protected void onResume() {
         super.onResume();
+        if (listState != null) {
+            layoutManager.onRestoreInstanceState(listState);
+        }
+
         tvErrorGlobalMsg.setVisibility(View.GONE);
         showHideLoadingList(loadingMovie, listMovie, true);
         movieListPresenter.loadMovies(getSortBy());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        listState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, listState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null)
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
     }
 
     @Override
@@ -133,6 +157,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     private void setupPreferenceSetting() {
         settingSp = PreferenceManager.getDefaultSharedPreferences(this);
+//        settingSp.edit().putString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC).apply();
     }
 
     private void initListMovieLayout() {
@@ -145,7 +170,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         } else {
             columns = 2;
         }
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, columns);
+        layoutManager = new GridLayoutManager(this, columns);
 
         listMovie.setLayoutManager(layoutManager);
         movieAdapter = new MovieListAdapter(movies, this);
