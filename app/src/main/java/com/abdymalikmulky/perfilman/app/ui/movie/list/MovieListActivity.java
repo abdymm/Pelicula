@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 public class MovieListActivity extends AppCompatActivity implements MovieListContract.View {
 
     //SETTING SP
-    SharedPreferences sp;
+    SharedPreferences settingSp;
 
 
     //REPO
@@ -128,12 +128,11 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     }
 
     private String getSortBy() {
-        return sp.getString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC);
+        return settingSp.getString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC);
     }
 
     private void setupPreferenceSetting() {
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC).apply();
+        settingSp = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     private void initListMovieLayout() {

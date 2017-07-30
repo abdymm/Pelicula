@@ -18,14 +18,14 @@
 
     <string name="pref_title_sortby">Filter or Sort By</string>
     <string-array name="pref_sortby_labels">
-        <item>My Favorites</item>
         <item>Most Popular</item>
         <item>Top Rated</item>
+        <item>My Favorites</item>
     </string-array>
     <string-array name="pref_sortby_values">
-        <item>my_favorites</item>
         <item>popular</item>
         <item>top_rated</item>
+        <item>my_favorites</item>
     </string-array>
 
     <string name="action_setting">Setting</string>

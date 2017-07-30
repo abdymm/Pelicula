@@ -4,6 +4,7 @@
         android:entries="@array/pref_sortby_labels"
         android:entryValues="@array/pref_sortby_values"
         android:key="pref_sortby"
+        android:summary="%s"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_sortby" />
