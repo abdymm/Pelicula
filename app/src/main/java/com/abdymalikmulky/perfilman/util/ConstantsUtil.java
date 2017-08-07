@@ -20,6 +20,10 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.abdymalikmulky.perfilman.app.data.video.Video;
 
@@ -60,5 +64,29 @@ public class ConstantsUtil {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, text);
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, text);
         activity.startActivity(Intent.createChooser(sharingIntent,"Share on"));
+    }
+
+    /**
+     LAYOUT VIEW
+     **/
+    public static void showHideLoadingList(ProgressBar pbLoading, RecyclerView rvList, TextView tvMsg,
+                                           boolean showLoading, boolean showError) {
+        if(showError) {
+            pbLoading.setVisibility(View.GONE);
+            rvList.setVisibility(View.GONE);
+            tvMsg.setVisibility(View.VISIBLE);
+        } else {
+            tvMsg.setVisibility(View.GONE);
+            if (showLoading) {
+                pbLoading.setVisibility(View.VISIBLE);
+                rvList.setVisibility(View.GONE);
+            } else {
+                pbLoading.setVisibility(View.GONE);
+                rvList.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    public static void showErrorInLoadingList(TextView tvMsg, boolean show) {
+
     }
 }

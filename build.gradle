@@ -16,6 +16,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
     }
 }
 
@@ -57,4 +58,6 @@ ext {
     butterknifeVersion = "8.6.0";
 
     picassoVersion = "2.5.2";
+
+    swipeRefreshVersion = "2.0.5";
 }

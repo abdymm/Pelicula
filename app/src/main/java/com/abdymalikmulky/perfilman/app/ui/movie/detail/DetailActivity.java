@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.abdymalikmulky.perfilman.R;
 import com.abdymalikmulky.perfilman.app.data.favorite.Favorite;
@@ -106,6 +105,10 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         initRepo();
         detailPresenter = new DetailPresenter(favoriteRepo, videoRepo, this);
 
+        initFragment();
+    }
+
+    private void initFragment() {
         setupTrailerFragment();
         setupReviewFragment();
     }
@@ -186,7 +189,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
     @Override
     public void showError(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -210,7 +213,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         movieDetailBackdrop.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                String sharingText = "This is first trailer of " + movie.getTitle();
+                String sharingText = "This is first trailer of " + movie.getTitle() + " " + video.getUrl(video);
                 ConstantsUtil.shareVideoIntent(DetailActivity.this, sharingText, video);
                 return true;
             }

@@ -26,10 +26,10 @@ public class MovieRepo implements MovieDataSource {
     }
 
     @Override
-    public void load(String filter, final LoadMoviesCallback callback) {
+    public void load(int page, String filter, final LoadMoviesCallback callback) {
         //If sort by favorites, just go to local data
         if(filter.equals(ConstantsUtil.MOVIE_LIST_SORT_BY_MY_FAVORITES)) {
-            movieLocal.load(filter, new LoadMoviesCallback() {
+            movieLocal.load(page, filter, new LoadMoviesCallback() {
                 @Override
                 public void onLoaded(List<Movie> movies) {
                     callback.onLoaded(movies);
@@ -44,7 +44,7 @@ public class MovieRepo implements MovieDataSource {
         } else {
             //Check if network is available
             if(NetworkUtil.isNetworkAvailable(context)) {
-                movieRemote.load(filter, new LoadMoviesCallback() {
+                movieRemote.load(page, filter, new LoadMoviesCallback() {
                     @Override
                     public void onLoaded(List<Movie> movies) {
                         saveMovieOnLocal(movies);
@@ -57,7 +57,7 @@ public class MovieRepo implements MovieDataSource {
                     }
                 });
             } else {
-                movieLocal.load(filter, new LoadMoviesCallback() {
+                movieLocal.load(page, filter, new LoadMoviesCallback() {
                     @Override
                     public void onLoaded(List<Movie> movies) {
                         callback.onLoaded(movies);

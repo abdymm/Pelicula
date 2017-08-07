@@ -66,6 +66,10 @@ dependencies {
     //db debug
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.dbDebugVersion"
 
+    //swipe refresh
+    compile "com.dinuscxj:recyclerrefreshlayout:$rootProject.swipeRefreshVersion"
+
+
     testCompile "junit:junit:$rootProject.junitVersion"
 
     compile 'com.android.support:support-v4:25.3.1'

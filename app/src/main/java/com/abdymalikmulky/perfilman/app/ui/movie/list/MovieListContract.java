@@ -15,13 +15,21 @@ public class MovieListContract {
 
     interface View extends BaseView<Presenter> {
         void showMovies(List<Movie> movies);
+
+        void showLoadMoreMovies(List<Movie> movies);
+
         void showError(String msg);
 
+        void showErrorLoadMore(String msg);
+
         void onListClicked(Movie movie);
+
     }
 
     interface Presenter extends BasePresenter {
         void loadMovies(String filter);
+
+        void loadMoreMovies(int page, String filter);
     }
 
 }

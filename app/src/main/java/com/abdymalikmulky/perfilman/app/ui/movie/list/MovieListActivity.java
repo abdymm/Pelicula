@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abdymalikmulky.perfilman.R;
 import com.abdymalikmulky.perfilman.app.data.movie.Movie;
@@ -24,6 +25,7 @@ import com.abdymalikmulky.perfilman.app.data.movie.MovieRepo;
 import com.abdymalikmulky.perfilman.app.ui.movie.detail.DetailActivity;
 import com.abdymalikmulky.perfilman.app.ui.movie.settings.SettingsActivity;
 import com.abdymalikmulky.perfilman.util.ConstantsUtil;
+import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
 import org.parceler.Parcels;
 
@@ -32,8 +34,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
-public class MovieListActivity extends AppCompatActivity implements MovieListContract.View {
+public class MovieListActivity extends AppCompatActivity implements MovieListContract.View, RecyclerRefreshLayout.OnRefreshListener {
 
     //state
     public final static String LIST_STATE_KEY = "recycler_list_state";
@@ -50,23 +53,31 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     private MovieListContract.Presenter movieListPresenter;
 
     //VIEW COMPONENT
+    @BindView(R.id.swipe_refresh_movie)
+    RecyclerRefreshLayout swipeRefreshMovie;
     @BindView(R.id.list_movie)
     RecyclerView listMovie;
     @BindView(R.id.loading_movie)
     ProgressBar loadingMovie;
     @BindView(R.id.tv_error_global_msg)
     TextView tvErrorGlobalMsg;
+    @BindView(R.id.loadmore_movie)
+    ProgressBar loadmoreMovie;
 
 
     private List<Movie> movies;
     private MovieListAdapter movieAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    private int pageCount = 1;
+    private boolean loadMoreState = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
 
         setupPreferenceSetting();
 
@@ -76,6 +87,15 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         movieListPresenter = new MovieListPresenter(this, movieRepo);
 
         initListMovieLayout();
+
+        showHideLoadingOrError(true, false);
+        movieListPresenter.loadMovies(getSortBy());
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -84,10 +104,6 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         if (listState != null) {
             layoutManager.onRestoreInstanceState(listState);
         }
-
-        tvErrorGlobalMsg.setVisibility(View.GONE);
-        showHideLoadingList(loadingMovie, listMovie, true);
-        movieListPresenter.loadMovies(getSortBy());
     }
 
     @Override
@@ -100,7 +116,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null)
+        if (savedInstanceState != null)
             listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
     }
 
@@ -130,18 +146,28 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     @Override
     public void showMovies(List<Movie> movies) {
-        showHideLoadingList(loadingMovie, listMovie, false);
+        pageCount++;
+        showHideLoadingOrError(false, false);
         listMovie.setVisibility(View.VISIBLE);
-
         movieAdapter.refresh(movies);
     }
 
     @Override
+    public void showLoadMoreMovies(List<Movie> movies) {
+        finishLoadMore(true);
+        movieAdapter.add(movies);
+    }
+
+    @Override
     public void showError(String msg) {
-        loadingMovie.setVisibility(View.GONE);
-        listMovie.setVisibility(View.GONE);
-        tvErrorGlobalMsg.setVisibility(View.VISIBLE);
         tvErrorGlobalMsg.setText(msg);
+        showHideLoadingOrError(false, true);
+    }
+
+    @Override
+    public void showErrorLoadMore(String msg) {
+        finishLoadMore(false);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -157,11 +183,9 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     private void setupPreferenceSetting() {
         settingSp = PreferenceManager.getDefaultSharedPreferences(this);
-//        settingSp.edit().putString(ConstantsUtil.SP_SORTBY, ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC).apply();
     }
 
     private void initListMovieLayout() {
-
         listMovie.setHasFixedSize(true);
 
         int columns;
@@ -175,15 +199,48 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         listMovie.setLayoutManager(layoutManager);
         movieAdapter = new MovieListAdapter(movies, this);
         listMovie.setAdapter(movieAdapter);
+
+
+        listMovie.setOnScrollListener(new MovieListScrolllListener(pageCount) {
+            @Override
+            public void onLoadMore(int current_page) {
+                Timber.d("Current_page %s", current_page);
+                if (loadMoreState) {
+                    loadMoreState = false;
+                    showLoadingMore(true);
+                    movieListPresenter.loadMoreMovies(pageCount, getSortBy());
+                }
+            }
+        });
+
+        //TODO:pndahinn ke presenter
+        swipeRefreshMovie.setOnRefreshListener(this);
     }
 
-    private void showHideLoadingList(ProgressBar pb, RecyclerView rv, boolean show) {
-        if (show) {
-            pb.setVisibility(View.VISIBLE);
-            rv.setVisibility(View.GONE);
-        } else {
-            pb.setVisibility(View.GONE);
-            rv.setVisibility(View.VISIBLE);
+    private void finishLoadMore(boolean success){
+        if(success){
+            pageCount++;
         }
+        loadMoreState = true;
+        showLoadingMore(false);
+    }
+    private void showLoadingMore(boolean show){
+        if(!show){
+            loadmoreMovie.setVisibility(View.GONE);
+        }else {
+            loadmoreMovie.setVisibility(View.VISIBLE);
+        }
+    }
+    private void showHideLoadingOrError(boolean showLoading, boolean showError) {
+        ConstantsUtil.showHideLoadingList(loadingMovie, listMovie, tvErrorGlobalMsg, showLoading, showError);
+    }
+
+
+    @Override
+    public void onRefresh() {
+        pageCount =1;
+        showHideLoadingOrError(false, false);
+        swipeRefreshMovie.setRefreshing(false);
+        movieListPresenter.loadMovies(getSortBy());
     }
 }

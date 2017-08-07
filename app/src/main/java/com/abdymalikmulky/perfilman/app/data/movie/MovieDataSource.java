@@ -14,5 +14,5 @@ public interface MovieDataSource {
         void onFailed(String errorMessage);
     }
 
-    void load(String filter, LoadMoviesCallback callback);
+    void load(int page, String filter, LoadMoviesCallback callback);
 }

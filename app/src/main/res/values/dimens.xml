@@ -19,7 +19,10 @@
     <dimen name="detail_poster_width">208px</dimen>
     <dimen name="detail_poster_height">281px</dimen>
 
-    <dimen name="detail_subtitle_width">210dp</dimen>
+    <dimen name="detail_subtitle_progressbar_padding_end">14dp</dimen>
+    <dimen name="detail_subtitle_progressbar_padding_top">10dp</dimen>
+    <dimen name="detail_subtitle_padding">10dp</dimen>
+    <dimen name="detail_subtitle_width">225dp</dimen>
     <dimen name="detail_subtitle_bottomright_radius">20dp</dimen>
     <dimen name="detail_subtitle_topright_radius">2dp</dimen>
 

@@ -24,10 +24,13 @@ import timber.log.Timber;
  */
 
 class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
 
     private List<Movie> movies;
     private Context context;
     private MovieListContract.View movieListView;
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.movie_detail_backdrop)
@@ -90,4 +93,9 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
         this.movies = movies;
         notifyDataSetChanged();
     }
+    public void add(List<Movie> movies){
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
+    }
+
 }

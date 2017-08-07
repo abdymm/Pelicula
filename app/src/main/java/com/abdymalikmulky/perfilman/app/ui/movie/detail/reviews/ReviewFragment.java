@@ -11,8 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.abdymalikmulky.perfilman.R;
 import com.abdymalikmulky.perfilman.app.data.review.Review;
@@ -34,12 +34,16 @@ import butterknife.Unbinder;
 public class ReviewFragment extends Fragment implements ReviewContract.View {
 
 
+    Unbinder unbinder;
+
     @BindView(R.id.movie_detail_subtitle_review)
     TextView movieDetailSubtitleReview;
     @BindView(R.id.detail_list_review)
     RecyclerView listReview;
-
-    Unbinder unbinder;
+    @BindView(R.id.loading_movie_review)
+    ProgressBar loadingMovieReview;
+    @BindView(R.id.tv_movie_review_error)
+    TextView tvMovieReviewError;
 
     private List<Review> reviews;
     private ReviewListAdapter reviewListAdapter;
@@ -83,6 +87,7 @@ public class ReviewFragment extends Fragment implements ReviewContract.View {
     @Override
     public void onResume() {
         super.onResume();
+        showHideLoadingOrError(true, false);
         reviewPresenter.loadReviews(movieId);
     }
 
@@ -105,13 +110,16 @@ public class ReviewFragment extends Fragment implements ReviewContract.View {
 
     @Override
     public void showReviews(List<Review> reviews) {
+        showHideLoadingOrError(false, false);
+
         this.reviews = reviews;
         reviewListAdapter.refresh(reviews);
     }
 
     @Override
     public void showError(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        tvMovieReviewError.setText(msg);
+        showHideLoadingOrError(false, true);
     }
 
     @Override
@@ -125,5 +133,9 @@ public class ReviewFragment extends Fragment implements ReviewContract.View {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private void showHideLoadingOrError(boolean showLoading, boolean showError) {
+        ConstantsUtil.showHideLoadingList(loadingMovieReview, listReview, tvMovieReviewError, showLoading, showError);
     }
 }

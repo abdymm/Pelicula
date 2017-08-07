@@ -50,7 +50,12 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
     }
 
     @Override
-    public void load(String filter, LoadMoviesCallback callback) {
+    public void load(int page, String filter, LoadMoviesCallback callback) {
+        final int itemPerPage = 4;
+        int pageLimit = itemPerPage * page;
+        int lowerLimit = pageLimit - itemPerPage;
+
+
         String conditionQuery = "";
         if(filter.equals(ConstantsUtil.MOVIE_LIST_SORT_BY_POPULARITY_DESC)) {
             conditionQuery =  "ORDER BY "+KEY_POPULARITY+" DESC";
@@ -61,6 +66,7 @@ public class MovieLocal extends DatabaseHelper implements MovieDataSource{
                     "( select " + FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + " " +
                     "from " + FavoriteContract.FavoriteEntry.TABLE_NAME + " )";
         }
+        conditionQuery += "LIMIT " + lowerLimit + ", " + pageLimit;
 
         List<Movie> movies = queryAll(conditionQuery);
         if(movies.size() > 0) {

@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.abdymalikmulky.perfilman.R;
 import com.abdymalikmulky.perfilman.app.data.video.Video;
@@ -29,14 +29,17 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VideoFragment extends Fragment implements VideoContract.View{
+public class VideoFragment extends Fragment implements VideoContract.View {
 
+    Unbinder unbinder;
     @BindView(R.id.movie_detail_subtitle_trailer)
     TextView movieDetailSubtitleTrailer;
     @BindView(R.id.detail_list_trailer)
     RecyclerView listTrailer;
-
-    Unbinder unbinder;
+    @BindView(R.id.loading_movie_trailer)
+    ProgressBar loadingMovieTrailer;
+    @BindView(R.id.tv_movie_trailer_error)
+    TextView tvMovieTrailerError;
 
     private List<Video> videos;
     private VideoListAdapter videoListAdapter;
@@ -80,6 +83,7 @@ public class VideoFragment extends Fragment implements VideoContract.View{
     @Override
     public void onResume() {
         super.onResume();
+        showHideLoadingOrError(true, false);
         videoPresenter.loadTrailers(movieId);
     }
 
@@ -107,17 +111,23 @@ public class VideoFragment extends Fragment implements VideoContract.View{
 
     @Override
     public void showVideos(List<Video> videos) {
+        showHideLoadingOrError(false, false);
         this.videos = videos;
         videoListAdapter.refresh(videos);
     }
 
     @Override
     public void showError(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        tvMovieTrailerError.setText(msg);
+        showHideLoadingOrError(false, true);
     }
 
     @Override
     public void onClicked(Video video) {
         ConstantsUtil.openVideoIntent(getActivity(), video);
+    }
+
+    private void showHideLoadingOrError(boolean showLoading, boolean showError) {
+        ConstantsUtil.showHideLoadingList(loadingMovieTrailer, listTrailer, tvMovieTrailerError, showLoading, showError);
     }
 }

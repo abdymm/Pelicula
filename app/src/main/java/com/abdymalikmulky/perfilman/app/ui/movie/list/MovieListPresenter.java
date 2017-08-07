@@ -35,7 +35,8 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void loadMovies(String sortBy) {
-        movieRepo.load(sortBy, new MovieDataSource.LoadMoviesCallback(){
+        //PAGE = 0 , initial load movie
+        movieRepo.load(1, sortBy, new MovieDataSource.LoadMoviesCallback(){
             @Override
             public void onLoaded(List<Movie> movies) {
                 movieListView.showMovies(movies);
@@ -44,6 +45,21 @@ public class MovieListPresenter implements MovieListContract.Presenter {
             @Override
             public void onFailed(String errorMessage) {
                 movieListView.showError(errorMessage);
+            }
+        });
+    }
+
+    @Override
+    public void loadMoreMovies(int page, String filter) {
+        movieRepo.load(page, filter, new MovieDataSource.LoadMoviesCallback() {
+            @Override
+            public void onLoaded(List<Movie> movies) {
+                movieListView.showLoadMoreMovies(movies);
+            }
+
+            @Override
+            public void onFailed(String errorMessage) {
+                movieListView.showErrorLoadMore(errorMessage);
             }
         });
     }
