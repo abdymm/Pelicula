@@ -175,6 +175,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         Intent detailIntent = new Intent(this, DetailActivity.class);
         detailIntent.putExtra(ConstantsUtil.INTENT_MOVIE, Parcels.wrap(movie));
         startActivity(detailIntent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     private String getSortBy() {
